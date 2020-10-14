@@ -1,0 +1,331 @@
+Docker with Ubuntu 20.04
+
+To Practice the below docker codes, make sure you have the below prerequities.
+1. Ubuntu installed in Virtualbox 
+2. Docker and Git installed in Ubuntu
+
+Step 1. Make sure you have virtualbox or vmware https://www.virtualbox.org/wiki/Downloads
+Step 2. To download ubuntu OS (Here I have used this version to pratice) Ubuntu 20.04.1 LTS -> https://ubuntu.com/download/desktop
+Step 3. Install Docker and prerequities
+https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-20-04
+
+
+3 day online session practices and tasks.
+
+Index
+Day 1 - Performing container operations
+
+Day 2:
+
+Note: 'Dockerfile' should always start with capital D.
+
+Task 1 : To customize html in nginx image.
+
+index.html -> Hello, Welcome to customized nginx page.
+
+Dockerfile ->
+FROM ubuntu
+MAINTAINER vijai
+RUN apt-get update
+RUN apt-get install nginx -y
+EXPOSE 80
+COPY index.html /var/www/html
+CMD nginx -g 'daemon off;'
+
+
+Task 2 : Create basic python app
+
+Dockerfile ->
+FROM ubuntu
+MAINTAINER vijai
+RUN apt-get update
+RUN apt-get install python3 -y
+COPY sample.py /var 
+CMD python3 /var/sample.py
+
+sample.py ->
+
+a = 5;
+b = 10;
+c = a+b;
+print("The sum of a and b is", c);
+
+Task 3 : Creating Lampstack app
+
+Dockerfile ->
+FROM ubuntu
+MAINTAINER vijai
+RUN apt-get update
+ARG DEBIAN_FRONTEND=noninteractive
+RUN apt-get install apache2 -y
+RUN apt-get install mysql-server -y
+RUN apt-get install php -y
+CMD ["/usr/sbin/apache2ctl","-DFOREGROUND"]
+
+
+docker image build -t mylampstack .   -> To Build an Image using Dockerfile
+docker container run -dt --name mylampstackcontainer -p 8082:80 mylampstack  -> To create a container using the build image
+http://localhost:8082/ -> Access the app in the url will show apache home page
+
+Task 4: Practice taging and push images to localhost registry and dockerhub
+
+  107  docker image pull registry
+  108  docker images
+  109  docker container run -dt --name myregistry --restart always -p 5000:5000 registry
+  110  docker ps
+  111  docker images
+  112  docker image tag python3:latest localhost:5000/python3:v1
+  113  docker images
+  114  docker image push localhost:5000/python3:v1
+  115  docker image tag python3:latest localhost:5000/python3:v2
+  116  docker image push localhost:5000/python3:v2
+  117  docker images
+  118  docker ps
+  119  docker rmi localhost:5000/python3:v1
+  120  docker images
+  121  docker rmi localhost:5000/python3:v2
+  122  docker images
+  124  docker image pull localhost:5000/python3:v1
+  125  docker images
+  126  docker image pull localhost:5000/python3:v2
+  127  docker images
+  128  docker search --help
+  129  docker search mysql --limit 10
+  130  docker search python3 --limit 10
+  131  docker login
+  132  docker images
+  133  docker image tag python3:latest vijaiselvam/mypython3:v1
+  134  docker images
+  135  docker image push vijaiselvam/mypython3:v1
+  136  docker images
+  137  docker image tag python3:latest vijaiselvam/mypython3:v2
+  138  docker images
+  139  docker image push vijaiselvam/mypython3:v2
+  140  docker rmi vijaiselvam/mypython3:v2
+  141  docker images
+  142  docker image pull vijaiselvam/mypython3:v2
+
+---
+
+
+Day 3
+
+DockerCompose Learning
+
+apt-get update && apt-get upgrade
+
+apt-get install curl wget -y
+
+curl -L "https://github.com/docker/compose/releases/download/1.23.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose  (It’s a single command)
+
+chmod +x /usr/local/bin/docker-compose
+
+docker-compose --version
+
+https://docker-hybridskill.s3.ap-south-1.amazonaws.com/compose-standalone/docker-compose.yml
+
+---
+
+historyCommands from training class
+
+history:
+
+1  sudo apt-get upgrade
+    2  apt-get upgrade
+    3  sudo apt-get update
+    4  sudo apt-get upgrade
+    5  sudo apt-get dist-upgrade
+    6  ls
+    7  cd Desktop/
+    8  ls
+    9  cd vmware-tools-distrib/
+   10  ls
+   11  sudo ./vmware-install.pl 
+   12  sudo su
+   13  docker ps
+   14  docker images
+   15  clear
+   16  vi Dockerfile
+   17  cat Dockerfile 
+   18  vi Dockerfile 
+   19  cat Dockerfile 
+   20  docker image build -t myimage
+   21  rm Dockerfile 
+   22  vi dockerfile
+   23  docker image build -t myimage
+   24  rm dockerfile
+   25  vi Dockerfile
+   26  clear
+   27  docker image build -t myimage
+   28  docker image build -t myimage .
+   29  vi Dockerfile
+   30  cat Dockerfile 
+   31  docker image build -t myimage .
+   32  vi Dockerfile 
+   33  docker image build -t myimage .
+   34  clear
+   35  docker images
+   36  docker container exec -it myimage bash
+   37  docker ps
+   38  docker container start myimage
+39  vi Dockerfile 
+   40  rm Dockerfile 
+   41  vi Dockerfile
+   42  cat Dockerfile 
+   43  docker image build -t mynginx .
+   44  cat Dockerfile 
+   45  vi Dockerfile 
+   46  docker image build -t mynginx .
+   47  cat Dockerfile 
+   48  vi Dockerfile 
+   49  cat Dockerfile 
+   50  docker image build -t mynginx .
+   51  vi index.html
+   52  docker image build -t mynginx .
+   53  docker container run mynginx
+   54  docker images
+   55  docker image build -t mynginx .
+   56  ls
+   57  cat Dockerfile 
+   58  clear
+   59  docker images
+   60  docker container run mynginx
+   61  docker images
+   62  docker container run -dt --name mynginx -p 8080:80 mynginx
+   63  docker ps
+   64  rm Dockerfile 
+   65  vi Dockerfile
+   66  vi sample.py
+   67  docker image build -t 
+   68  clear
+69  docker ps
+   70  docker images
+   71  docker container run python3
+   72  clear
+   73  docker mages
+   74  docker images
+   75  docker pull mattrayner/lamp
+   76  docker images
+   77  rm Dockerfile 
+   78  rm Dockerfile 
+   79  vi Dockerfile
+   80  docker container run -dt --name lampstack
+   81  docker image build -t mylampstack .
+   82  docker images
+   83  docker container run -dt --name mylampstackcontainer -p 8082:80 mylampstack
+   84  vi Dockerfile 
+   85  rm Dockerfile 
+   86  vi Docker
+   87  ls
+   88  vi DockerFile
+   89  ls
+   90  docker ps
+   91  docker ps -a
+   92  docker container rm mylampstackcontainer
+   93  docker ps -a
+   94  docker images
+   95  docker image rm mylampstack
+   96  docker images
+   97  docker image build -t mylampstack .
+   98  cat DockerFile 
+   99  rm DockerFile 
+  100  vi Dockerfile
+  101  docker images
+  102  docker image build -t mylampstack .
+  103  docker images
+  104  docker container run -dt --name mylampstackcontainer -p 8082:80 mylampstack
+  105  docker ps
+  106  clear
+  107  docker image pull registry
+  108  docker images
+  109  docker container run -dt --name myregistry --restart always -p 5000:5000 registry
+110  docker ps
+  111  docker images
+  112  docker image tag python3:latest localhost:5000/python3:v1
+  113  docker images
+  114  docker image push localhost:5000/python3:v1
+  115  docker image tag python3:latest localhost:5000/python3:v2
+  116  docker image push localhost:5000/python3:v2
+  117  docker images
+  118  docker ps
+  119  docker rmi localhost:5000/python3:v1
+  120  docker images
+  121  docker rmi localhost:5000/python3:v2
+  122  docker images
+  123  docker pull
+  124  docker image pull localhost:5000/python3:v1
+  125  docker images
+  126  docker image pull localhost:5000/python3:v2
+  127  docker images
+  128  docker search --help
+  129  docker search mysql --limit 10
+  130  docker search python3 --limit 10
+  131  docker login
+  132  docker images
+  133  docker image tag python3:latest vijaiselvam/mypython3:v1
+  134  docker images
+  135  docker image push vijaiselvam/mypython3:v1
+  136  docker images
+  137  docker image tag python3:latest vijaiselvam/mypython3:v2
+  138  docker images
+  139  docker image push vijaiselvam/mypython3:v2
+  140  docker rmi vijaiselvam/mypython3:v2
+  141  docker images
+142  docker image pull vijaiselvam/mypython3:v2
+  143  docker images
+  144  ls
+  145  cd dockertraining/
+  146  ls
+  147  cd ..
+  148  vi Dockerfile
+  149  cd dockertraining/
+  150  ls
+  151  ls -a
+  152  ls -ltr
+  153  vi Dockerfile
+  154  rm Dockerfile
+  155  ls
+  156  vi Dockerfile
+  157  ls
+  158  cd ..
+  159  ls
+  160  copy Dockerfile /dockertraining/Dockerfile
+  161  cp Dockerfile /dockertraining/Dockerfile
+  162  clear
+  163  ls
+  164  rm dockertraining
+  165  rmdir dockertraining
+  166  rmdir -f dockertraining
+  167  rm -r dockertraining
+  168  clear
+  169  ls
+  170  git status
+  171  docker images
+  172  ls
+  173  cd dockertraining
+  174  git status
+  175  git pull
+  176  sudo git pull
+  177  sudo vi Dockerfile
+  178  ls
+  179  git add .
+  180  sudo git add .
+  181  sudo git status
+182  sudo git commit -m "nginx Docker file"
+  183  git config --global user.email "vijai335@gmail.com"
+  184  git config --global user.name "Vijai"
+  185  sudo git commit -m "nginx Docker file"
+  186  sudo git push
+  187  cd ..
+  188  docker images
+  189  FROM ubuntu
+  190  MAINTAINER vijai
+  191  RUN apt-get update
+  192  RUN apt-get install nginx -y
+  193  EXPOSE 80
+  194  clear
+  195  docker pull vijaiselvam/apache2
+  196  docker images
+  197  docker container run -dt --name myapache -p 8111:80 vijaiselvam/apache2
+  198  docker ps
+  199  history
